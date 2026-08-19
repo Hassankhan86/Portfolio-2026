@@ -466,6 +466,7 @@ p {
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-top: -3rem;
 }
 
 .availability-pill {
@@ -732,16 +733,34 @@ p {
 }
 
 .edu-card {
+  position: relative;
+  overflow: hidden;
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
   padding: 1.5rem;
-  transition: transform 0.25s var(--ease), border-color 0.25s var(--ease);
+  transition: transform 0.3s var(--ease), border-color 0.3s var(--ease), box-shadow 0.3s var(--ease);
+}
+
+.edu-card::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 3px;
+  background: var(--card-accent, var(--accent));
+  opacity: 0;
+  transition: opacity 0.3s var(--ease);
+  pointer-events: none;
 }
 
 .edu-card:hover {
-  transform: translateY(-4px);
-  border-color: var(--border-strong);
+  transform: translateY(-8px);
+  border-color: var(--card-accent, var(--border-strong));
+  box-shadow: 0 22px 48px var(--card-glow, var(--shadow-md));
+}
+
+.edu-card:hover::before {
+  opacity: 1;
 }
 
 .edu-card-head {
@@ -820,12 +839,28 @@ p {
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
   padding: 1.5rem;
-  transition: border-color 0.25s var(--ease), transform 0.25s var(--ease);
+  transition: border-color 0.3s var(--ease), transform 0.3s var(--ease), box-shadow 0.3s var(--ease);
+}
+
+.skill-card::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 3px;
+  background: var(--card-accent, var(--accent));
+  opacity: 0;
+  transition: opacity 0.3s var(--ease);
+  pointer-events: none;
 }
 
 .skill-card:hover {
-  border-color: var(--border-strong);
-  transform: translateY(-3px);
+  border-color: var(--card-accent, var(--border-strong));
+  transform: translateY(-8px);
+  box-shadow: 0 22px 48px var(--card-glow, var(--shadow-md));
+}
+
+.skill-card:hover::before {
+  opacity: 1;
 }
 
 /* Oversized, near-invisible glyph in the corner for depth — purely
@@ -991,10 +1026,51 @@ p {
 /* =========================================================
    Projects
    ========================================================= */
+.project-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-bottom: 2rem;
+}
+
+.filter-chip {
+  padding: 0.5rem 1.1rem;
+  border-radius: 999px;
+  border: 1px solid var(--border-strong);
+  background: var(--surface);
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  font-weight: 500;
+  transition: color 0.2s var(--ease), border-color 0.2s var(--ease), background 0.2s var(--ease), transform 0.2s var(--ease);
+}
+
+.filter-chip:hover,
+.filter-chip:focus-visible {
+  color: var(--text);
+  border-color: var(--accent);
+  transform: translateY(-2px);
+}
+
+.filter-chip.is-active {
+  background: var(--accent-gradient);
+  color: var(--ink);
+  border-color: transparent;
+}
+
 .projects-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   gap: 1.5rem;
+}
+
+.project-card.is-hidden {
+  display: none;
+}
+
+.projects-more {
+  display: flex;
+  justify-content: center;
+  margin-top: 2.5rem;
 }
 
 .project-card {
@@ -1005,13 +1081,32 @@ p {
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   overflow: hidden;
-  transition: transform 0.25s var(--ease), border-color 0.25s var(--ease), box-shadow 0.25s var(--ease);
+  transition: transform 0.3s var(--ease), border-color 0.3s var(--ease), box-shadow 0.3s var(--ease);
+}
+
+/* Thin accent stripe along the top edge, tinted to the card's own
+   --card-accent — stays invisible until hover so it reads as a subtle
+   "lit up" cue rather than a permanent color block. */
+.project-card::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 3px;
+  background: var(--card-accent, var(--accent));
+  opacity: 0;
+  transition: opacity 0.3s var(--ease);
+  z-index: 2;
+  pointer-events: none;
 }
 
 .project-card:hover {
-  transform: translateY(-5px);
-  border-color: var(--border-strong);
-  box-shadow: var(--shadow-md);
+  transform: translateY(-8px);
+  border-color: var(--card-accent, var(--border-strong));
+  box-shadow: 0 22px 48px var(--card-glow, var(--shadow-md));
+}
+
+.project-card:hover::before {
+  opacity: 1;
 }
 
 /* Invisible full-cover trigger — makes the whole card clickable/keyboard-
@@ -1027,21 +1122,31 @@ p {
 }
 
 .project-thumb {
-  height: 130px;
+  height: 170px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 2.2rem;
-  color: rgba(255, 255, 255, 0.9);
   position: relative;
   overflow: hidden;
 }
 
+/* Faint dot grid over the thumbnail — echoes the hero section's
+   wireframe-grid motif so the "technical" feel carries through the page. */
 .project-thumb::after {
   content: "";
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.18), transparent 60%);
+  background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+  background-size: 18px 18px;
+  pointer-events: none;
+}
+
+.project-thumb-icon {
+  position: relative;
+  z-index: 1;
+  width: 56px;
+  height: 56px;
+  stroke-width: 1.5;
 }
 
 .project-body {
@@ -1051,39 +1156,44 @@ p {
   flex: 1;
 }
 
-.project-top-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.5rem;
-  margin-bottom: 0.85rem;
-}
-
-.project-tag {
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  color: var(--accent);
-  background: var(--accent-soft);
-  padding: 0.3rem 0.65rem;
-  border-radius: 999px;
-}
-
-.project-metric {
-  font-size: 0.72rem;
-  font-weight: 700;
-  color: var(--ink);
-  background: var(--accent-gradient);
-  padding: 0.3rem 0.65rem;
-  border-radius: 999px;
-  white-space: nowrap;
-}
-
 .project-title {
   font-size: 1.15rem;
-  margin-bottom: 0.6rem;
   line-height: 1.35;
+}
+
+.project-view-details {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  margin-top: 1.25rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  transition: color 0.2s var(--ease);
+}
+
+.project-card:hover .project-view-details {
+  color: var(--card-accent, var(--accent));
+}
+
+.project-arrow {
+  width: 18px;
+  height: 18px;
+  color: var(--text-faint);
+  flex-shrink: 0;
+  transition: color 0.2s var(--ease), transform 0.2s var(--ease);
+}
+
+.project-card:hover .project-arrow {
+  color: var(--card-accent, var(--accent));
+  transform: translate(2px, -2px);
+}
+
+.project-category {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  margin: 0.3rem 0 0.85rem;
 }
 
 .project-summary {
@@ -1100,11 +1210,14 @@ p {
 }
 
 .project-tech-tag {
-  font-size: 0.78rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
   padding: 0.3rem 0.65rem;
   border-radius: 8px;
-  background: var(--surface-hover);
-  border: 1px solid var(--border);
+  background: transparent;
+  border: 1px solid var(--border-strong);
   color: var(--text-muted);
 }
 
@@ -1117,20 +1230,55 @@ p {
   gap: 1.25rem;
 }
 
-.cert-card {
+.cert-card.is-hidden {
+  display: none;
+}
+
+.certs-more {
   display: flex;
-  align-items: stretch;
-  gap: 1rem;
+  justify-content: center;
+  margin-top: 2.5rem;
+}
+
+.cert-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
   padding: 1.35rem;
-  transition: transform 0.25s var(--ease), border-color 0.25s var(--ease);
+  overflow: hidden;
+  transition: transform 0.3s var(--ease), border-color 0.3s var(--ease), box-shadow 0.3s var(--ease);
+}
+
+/* Same top-edge accent stripe as .project-card, tinted to the card's own
+   --card-accent (the issuing platform's color) — hidden until hover. */
+.cert-card::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 3px;
+  background: var(--card-accent, var(--accent));
+  opacity: 0;
+  transition: opacity 0.3s var(--ease);
+  pointer-events: none;
 }
 
 .cert-card:hover {
-  transform: translateY(-4px);
-  border-color: var(--border-strong);
+  transform: translateY(-8px);
+  border-color: var(--card-accent, var(--border-strong));
+  box-shadow: 0 22px 48px var(--card-glow, var(--shadow-md));
+}
+
+.cert-card:hover::before {
+  opacity: 1;
+}
+
+.cert-top {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
 }
 
 .cert-badge {
@@ -1173,29 +1321,22 @@ p {
 .cert-links {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 0.9rem;
   margin-top: auto;
   padding-top: 0.9rem;
 }
 
 .cert-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.3rem;
   font-size: 0.8rem;
-  font-weight: 600;
-  color: #60a5fa;
-  transition: opacity 0.2s var(--ease);
-}
-
-.cert-link svg {
-  width: 0.9em;
-  height: 0.9em;
+  font-weight: 500;
+  color: var(--text-muted);
+  transition: color 0.2s var(--ease);
 }
 
 .cert-link:hover,
 .cert-link:focus-visible {
-  opacity: 0.75;
+  color: var(--card-accent, var(--accent));
   text-decoration: underline;
 }
 
@@ -1480,6 +1621,31 @@ p {
   color: var(--text-faint);
   font-size: 0.88rem;
   background: var(--bg-alt);
+}
+
+.cert-modal-viewer {
+  margin-top: 1rem;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: #000;
+}
+
+.cert-modal-viewer iframe {
+  width: 100%;
+  /* Most course-certificate PDFs are a single landscape page (~A4/Letter
+     landscape) — size the frame to that ratio instead of a flat
+     viewport-height box, so it hugs the certificate instead of leaving
+     a lot of empty space below it. */
+  aspect-ratio: 1.4 / 1;
+  max-height: 75vh;
+  display: block;
+  border: 0;
+}
+
+.cert-modal-viewer img {
+  width: 100%;
+  display: block;
 }
 
 /* =========================================================

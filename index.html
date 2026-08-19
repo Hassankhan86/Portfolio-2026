@@ -114,7 +114,7 @@
           <div class="about-edu reveal">
             <h3 class="about-subheading">Education</h3>
             <div class="education-grid">
-              <div class="edu-card reveal">
+              <div class="edu-card reveal" style="--card-accent:#4f46e5; --card-glow:rgba(79, 70, 229, 0.35)">
                 <div class="edu-card-head">
                   <div class="edu-institution">
                     <img class="edu-logo" src="assets/logo/information_technology_university_logo.jpg" alt="Information Technology University logo" loading="lazy" />
@@ -126,7 +126,7 @@
                 <p class="edu-school">Lahore, Pakistan</p>
                 <p class="edu-extra">In Progress</p>
               </div>
-              <div class="edu-card reveal">
+              <div class="edu-card reveal" style="--card-accent:#22c55e; --card-glow:rgba(34, 197, 94, 0.35)">
                 <div class="edu-card-head">
                   <div class="edu-institution">
                     <img class="edu-logo" src="assets/logo/minhajuniversitylahore_logo.jpg" alt="Minhaj University Lahore logo" loading="lazy" />
@@ -145,25 +145,32 @@
             <h1 class="hero-name about-name">Hi, I'm Hassan Jamal Khan — <span id="typewriterRole" aria-hidden="true"></span><span class="hero-cursor" aria-hidden="true">|</span><span class="sr-only">AI/ML Engineer, AI Engineer, and Data Scientist</span></h1>
 
             <p class="about-text">
-              AI/ML Engineer with 3+ years of software engineering background, specializing in designing and
+              <!-- AI/ML Engineer with 3+ years of software engineering background, specializing in designing and
               deploying end-to-end machine learning systems. Skilled in deep learning, NLP, and Generative AI
               (RAG, transformers, LLMs), with hands-on experience in model training, fine-tuning, and MLOps
               pipelines. Proficient in Python, Scikit-learn, TensorFlow, LangChain, and cloud platforms (AWS,
               Docker). Currently pursuing an MS in Data Science, with a solid foundation in statistics and a
-              focus on solving real-world problems with AI.
+              focus on solving real-world problems with AI. -->
+              
+              AI/ML Engineer who turns complex data into scalable, production-grade AI applications. 
+              Combining a 3+ year software background with hands-on expertise in Machine Learning, 
+              Deep Learning, NLP, Computer Vision, and Generative AI, I build everything from predictive 
+              pipelines to autonomous LLM agents. Tech stack includes Python, TensorFlow, Scikit-learn, 
+              LangChain, LangGraph, and AWS/Docker. Currently pursuing an MS in Data Science.
+
             </p>
 
             <div class="about-stats reveal">
               <div class="about-stat">
-                <span class="about-stat-num">3+</span>
+                <span class="about-stat-num">4+</span>
                 <span class="about-stat-label">Years Experience</span>
               </div>
-              <div class="about-stat">
+              <!-- <div class="about-stat">
                 <span class="about-stat-num">5</span>
                 <span class="about-stat-label">Projects Completed</span>
-              </div>
+              </div> -->
               <div class="about-stat">
-                <span class="about-stat-num">5</span>
+                <span class="about-stat-num">6+</span>
                 <span class="about-stat-label">Certifications</span>
               </div>
               <div class="about-stat">
@@ -248,7 +255,10 @@
         <h2 id="projects-heading" class="section-heading">Projects</h2>
         <p class="section-subheading">Click any project to see full details, tech stack, and results.</p>
 
+        <div class="project-filters" id="projectFilters" role="group" aria-label="Filter projects by category"></div>
+
         <div class="projects-grid" id="projectsGrid"></div>
+        <div class="projects-more" id="projectsMore"></div>
       </div>
     </section>
 
@@ -259,6 +269,7 @@
         <h2 id="certifications-heading" class="section-heading">Certifications</h2>
 
         <div class="cert-grid" id="certGrid"></div>
+        <div class="certs-more" id="certsMore"></div>
       </div>
     </section>
 
@@ -309,6 +320,16 @@
     <div class="modal">
       <button class="modal-close" id="modalClose" aria-label="Close project details">&times;</button>
       <div class="modal-body" id="modalBody">
+        <!-- Populated by js/main.js -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ CERTIFICATE VIEWER MODAL ============ -->
+  <div class="modal-overlay" id="certModal" role="dialog" aria-modal="true" aria-labelledby="certModalTitle" hidden>
+    <div class="modal">
+      <button class="modal-close" id="certModalClose" aria-label="Close certificate viewer">&times;</button>
+      <div class="modal-body" id="certModalBody">
         <!-- Populated by js/main.js -->
       </div>
     </div>
