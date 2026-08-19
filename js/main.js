@@ -21,17 +21,20 @@
     database: '<ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.66 3.58 3 8 3s8-1.34 8-3V5M4 12c0 1.66 3.58 3 8 3s8-1.34 8-3"/>',
     cloud: '<path d="M17.5 19a4.5 4.5 0 0 0 0-9 6 6 0 0 0-11.4-1.5A4.5 4.5 0 0 0 6.5 19h11Z"/>',
     bot: '<rect x="3" y="8" width="18" height="12" rx="2"/><path d="M12 8V4m-4 0h8M8 14v1m8-1v1"/>',
+    bolt: '<path d="M13 2 3 14h7l-1 8 10-12h-7l1-8Z"/>',
   };
 
   const SKILLS = [
     {
       title: "Programming",
       icon: "code",
+      color: "#60a5fa",
       items: ["Python", "SQL"],
     },
     {
       title: "ML & AI",
-      icon: "chart",
+      icon: "brain",
+      color: "#a78bfa",
       items: [
         "Scikit-learn", "Pandas", "NumPy", "Matplotlib",
         "Supervised & Unsupervised Algorithms", "Feature Engineering", "Data Visualization",
@@ -39,22 +42,26 @@
     },
     {
       title: "Statistics",
-      icon: "layers",
+      icon: "chart",
+      color: "#34d399",
       items: ["Probability", "Hypothesis Testing", "Regression Analysis", "Statistical Analysis"],
     },
     {
       title: "NLP & Deep Learning",
-      icon: "brain",
+      icon: "layers",
+      color: "#f472b6",
       items: ["NLTK", "ANN", "CNN", "RNN", "LSTM", "GRU", "Encoder-Decoder", "Transformers (Keras / TensorFlow)"],
     },
     {
       title: "Generative AI",
       icon: "sparkles",
+      color: "#fbbf24",
       items: ["LangChain", "RAG", "Agentic AI", "Crew AI", "LangGraph", "Hugging Face", "Fine-tuning", "Quantization"],
     },
     {
       title: "Development",
       icon: "bot",
+      color: "#38bdf8",
       items: [
         "Django", "Django REST Framework", "Django ORM", "JWT Authentication",
         "Celery", "Django Channels", "Middleware", "React", "Flask", "REST APIs", "Streamlit",
@@ -63,16 +70,19 @@
     {
       title: "Database",
       icon: "database",
+      color: "#fb923c",
       items: ["SQL", "MongoDB (PyMongo)", "Redis", "Vector Databases (FAISS, ChromaDB)"],
     },
     {
       title: "Deployment & Version Control",
       icon: "cloud",
+      color: "#4ade80",
       items: ["AWS (EC2, ECR, Bedrock, SageMaker)", "Azure", "Docker", "Heroku", "Git", "GitHub"],
     },
     {
       title: "Automation & Scraping",
-      icon: "code",
+      icon: "bolt",
+      color: "#f87171",
       items: ["n8n", "Selenium", "Playwright", "BeautifulSoup"],
     },
   ];
@@ -83,6 +93,7 @@
       title: "Real Estate Price Prediction & Recommendation System",
       tag: "Regression",
       icon: "🏠",
+      gradient: ["#3b82f6", "#1d4ed8"],
       summary: "End-to-end ML pipeline for property price prediction with a content-based recommendation engine, deployed on AWS.",
       highlights: [
         "Built an end-to-end ML pipeline for property price prediction, performing data preprocessing, EDA, and feature engineering (area extraction, categorical encoding, outlier handling, VIF, SHAP, RFE) on real-world housing datasets",
@@ -100,6 +111,7 @@
       title: "Emotion Detection using CNN (FER2013 Dataset)",
       tag: "Image Classification",
       icon: "🙂",
+      gradient: ["#ec4899", "#a21caf"],
       summary: "CNN-based facial emotion recognition system with real-time webcam inference, benchmarked against transfer-learning baselines.",
       highlights: [
         "Developed a CNN-based facial emotion recognition system using the FER2013 dataset (7 emotion classes)",
@@ -117,6 +129,7 @@
       title: "Multi-Agent Career AI Assistant",
       tag: "Agentic AI",
       icon: "🤖",
+      gradient: ["#8b5cf6", "#5b21b6"],
       summary: "Multi-agent LLM platform orchestrating specialized agents for resume analysis, job search, and interview prep.",
       highlights: [
         "Built an end-to-end multi-agent AI career platform with specialized agents for resume analysis, job search, market research, cover letter generation, mock interview system, and career advisory using LLM orchestration",
@@ -133,6 +146,7 @@
       title: "Network Security Prediction System",
       tag: "Classification",
       icon: "🛡️",
+      gradient: ["#f97316", "#c2410c"],
       summary: "Production-grade MLOps pipeline for phishing detection with experiment tracking and CI/CD deployment on AWS.",
       highlights: [
         "Built an end-to-end MLOps pipeline (Data Ingestion, Validation, Transformation, Model Training) with MongoDB integration for phishing detection",
@@ -150,6 +164,7 @@
       title: "Bank Loan Default Prediction",
       tag: "Classification",
       icon: "🏦",
+      gradient: ["#22c55e", "#15803d"],
       summary: "Credit risk model identifying high-risk loan defaults using advanced feature engineering and imbalance handling.",
       highlights: [
         "Built an end-to-end Bank Loan Default Prediction system using Machine Learning, including data cleaning, EDA, and advanced feature engineering (WOE/IV, VIF)",
@@ -164,11 +179,11 @@
   ];
 
   const CERTIFICATIONS = [
-    { title: "Machine Learning with Python", issuer: "Coursera" },
-    { title: "Supervised Machine Learning: Regression and Classification", issuer: "DeepLearning.AI" },
-    { title: "Advanced Learning Algorithms", issuer: "DeepLearning.AI" },
-    { title: "Complete Data Science, Machine Learning, DL, NLP Bootcamp", issuer: "Udemy" },
-    { title: "Complete Generative AI Course With LangChain and Huggingface", issuer: "Udemy" },
+    { title: "Machine Learning with Python", issuer: "Coursera", courseLink: "#", certLink: "#" },
+    { title: "Supervised Machine Learning: Regression and Classification", issuer: "DeepLearning.AI", courseLink: "#", certLink: "#" },
+    { title: "Advanced Learning Algorithms", issuer: "DeepLearning.AI", courseLink: "#", certLink: "#" },
+    { title: "Complete Data Science, Machine Learning, DL, NLP Bootcamp", issuer: "Udemy", courseLink: "#", certLink: "#" },
+    { title: "Complete Generative AI Course With LangChain and Huggingface", issuer: "Udemy", courseLink: "#", certLink: "#" },
   ];
 
   /* ---------------------------------------------------------
@@ -184,17 +199,29 @@
     return div.innerHTML;
   }
 
+  function hexToRgba(hex, alpha) {
+    const h = hex.replace("#", "");
+    const r = parseInt(h.substring(0, 2), 16);
+    const g = parseInt(h.substring(2, 4), 16);
+    const b = parseInt(h.substring(4, 6), 16);
+    return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+  }
+
   /* ---------------------------------------------------------
      Render: Skills
      --------------------------------------------------------- */
 
   function renderSkills() {
     const grid = $("#skillsGrid");
-    grid.innerHTML = SKILLS.map((group) => `
+    grid.innerHTML = SKILLS.map((group) => {
+      const icon = SKILL_ICON[group.icon];
+      const color = group.color;
+      return `
       <div class="skill-card reveal">
+        <svg class="skill-card-deco" viewBox="0 0 24 24" aria-hidden="true" style="color:${color}">${icon}</svg>
         <h3 class="skill-card-title">
-          <span class="skill-card-icon">
-            <svg viewBox="0 0 24 24" aria-hidden="true">${SKILL_ICON[group.icon]}</svg>
+          <span class="skill-card-icon" style="background:${hexToRgba(color, 0.16)};color:${color}">
+            <svg viewBox="0 0 24 24" aria-hidden="true">${icon}</svg>
           </span>
           ${escapeHTML(group.title)}
         </h3>
@@ -202,7 +229,8 @@
           ${group.items.map((item) => `<span class="skill-tag">${escapeHTML(item)}</span>`).join("")}
         </div>
       </div>
-    `).join("");
+    `;
+    }).join("");
   }
 
   /* ---------------------------------------------------------
@@ -213,7 +241,7 @@
     const grid = $("#projectsGrid");
     grid.innerHTML = PROJECTS.map((p, i) => `
       <article class="project-card reveal" style="transition-delay:${Math.min(i, 4) * 60}ms">
-        <div class="project-thumb" style="background:${thumbGradient(i)}" aria-hidden="true">${p.icon}</div>
+        <div class="project-thumb" style="background:linear-gradient(135deg, ${p.gradient[0]}, ${p.gradient[1]})" aria-hidden="true">${p.icon}</div>
         <div class="project-body">
           <span class="project-tag">${escapeHTML(p.tag)}</span>
           <h3 class="project-title">${escapeHTML(p.title)}</h3>
@@ -234,17 +262,6 @@
     `).join("");
   }
 
-  function thumbGradient(index) {
-    const gradients = [
-      "linear-gradient(135deg, #0891b2, #22d3ee)",
-      "linear-gradient(135deg, #7c3aed, #a78bfa)",
-      "linear-gradient(135deg, #0ea5e9, #6366f1)",
-      "linear-gradient(135deg, #059669, #22d3ee)",
-      "linear-gradient(135deg, #db2777, #a78bfa)",
-    ];
-    return gradients[index % gradients.length];
-  }
-
   /* ---------------------------------------------------------
      Render: Certifications
      --------------------------------------------------------- */
@@ -259,6 +276,16 @@
         <div>
           <h3 class="cert-title">${escapeHTML(c.title)}</h3>
           <p class="cert-issuer">${escapeHTML(c.issuer)}</p>
+          <div class="cert-links">
+            <a class="cert-link" href="${c.courseLink}" target="_blank" rel="noopener noreferrer">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14 21 3"/></svg>
+              Course Link
+            </a>
+            <a class="cert-link" href="${c.certLink}" target="_blank" rel="noopener noreferrer">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14 21 3"/></svg>
+              View Certificate
+            </a>
+          </div>
         </div>
       </div>
     `).join("");
@@ -494,7 +521,7 @@
   function initNavbarScrollState() {
     const navbar = $("#navbar");
     const onScroll = () => {
-      navbar.style.boxShadow = window.scrollY > 8 ? "var(--shadow-md)" : "none";
+      navbar.classList.toggle("is-scrolled", window.scrollY > 8);
     };
     window.addEventListener("scroll", onScroll, { passive: true });
     onScroll();
@@ -504,6 +531,105 @@
     $("#backToTop").addEventListener("click", () => {
       window.scrollTo({ top: 0, behavior: "smooth" });
     });
+  }
+
+  /* ---------------------------------------------------------
+     About photo
+     --------------------------------------------------------- */
+
+  function initAboutPhoto() {
+    const img = $("#aboutPhotoImg");
+    if (!img) return;
+    // The gradient initials fallback is what's visually shown until this
+    // fires — an <img> with a 404 src never reveals itself (stays at
+    // opacity: 0 per CSS), so a missing assets/images/profile.jpg just
+    // silently keeps the fallback instead of showing a broken-image icon.
+    const reveal = () => img.classList.add("is-loaded");
+    if (img.complete && img.naturalWidth > 0) {
+      reveal();
+    } else {
+      img.addEventListener("load", reveal);
+    }
+  }
+
+  /* ---------------------------------------------------------
+     Typewriter ("A" -> "AI" -> "AI/" -> ... -> full phrase, then
+     deletes back out and moves to the next phrase, looping forever)
+     --------------------------------------------------------- */
+
+  function startTypewriter(el, phrases, timing = {}) {
+    if (!el) return;
+
+    const {
+      typeMs = 110,
+      deleteMs = 55,
+      holdFullMs = 1800,
+      holdEmptyMs = 400,
+      // Skip the type-in animation for phrases[0] only — it appears fully
+      // formed immediately (e.g. a name that shouldn't flicker in on load)
+      // — then falls into the normal hold -> delete -> next-phrase cycle.
+      instantFirst = false,
+    } = timing;
+
+    // Respect reduced-motion users the same way the CSS animations
+    // already do elsewhere on the page — just show the first phrase,
+    // static, instead of cycling.
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      el.textContent = phrases[0];
+      return;
+    }
+
+    let phraseIndex = 0;
+    let charCount = 0;
+    let deleting = false;
+
+    function tick() {
+      const phrase = phrases[phraseIndex];
+      charCount += deleting ? -1 : 1;
+      el.textContent = phrase.slice(0, charCount);
+
+      if (!deleting && charCount === phrase.length) {
+        setTimeout(() => {
+          deleting = true;
+          tick();
+        }, holdFullMs);
+        return;
+      }
+
+      if (deleting && charCount === 0) {
+        phraseIndex = (phraseIndex + 1) % phrases.length;
+        setTimeout(() => {
+          deleting = false;
+          tick();
+        }, holdEmptyMs);
+        return;
+      }
+
+      setTimeout(tick, deleting ? deleteMs : typeMs);
+    }
+
+    if (instantFirst) {
+      charCount = phrases[0].length;
+      el.textContent = phrases[0];
+      setTimeout(() => {
+        deleting = true;
+        tick();
+      }, holdFullMs);
+    } else {
+      tick();
+    }
+  }
+
+  function initRoleTypewriter() {
+    startTypewriter($("#typewriterRole"), ["AI/ML Engineer", "AI Engineer", "Data Scientist"]);
+  }
+
+  function initNavTypewriter() {
+    startTypewriter(
+      $("#typewriterNav"),
+      ["Hassan Jamal Khan", "AI/ML Engineer", "AI Engineer", "Data Scientist"],
+      { instantFirst: true }
+    );
   }
 
   /* ---------------------------------------------------------
@@ -521,5 +647,8 @@
     initProjectModal();
     initNavbarScrollState();
     initBackToTop();
+    initAboutPhoto();
+    initRoleTypewriter();
+    initNavTypewriter();
   });
 })();

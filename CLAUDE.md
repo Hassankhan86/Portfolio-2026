@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project overview
 
-A single-page personal portfolio site for Hassan Jamal Khan (AI/ML Engineer), built with **plain HTML5, CSS3, and vanilla JavaScript only** — no frameworks, no bundlers, no npm dependencies. It must keep working by simply opening `index.html` in a browser or serving the folder as static files.
+A single-page personal portfolio site for Hassan Jamal Khan (AI/ML Engineer), built with **plain HTML5, CSS3, and JavaScript only** — no frameworks, no bundlers, no npm dependencies. It must keep working by simply opening `index.html` in a browser or serving the folder as static files so it can deploy easily on github free.
 
 ## Running / previewing
 
