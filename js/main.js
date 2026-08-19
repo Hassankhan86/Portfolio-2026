@@ -102,6 +102,7 @@
         "Deployed application on AWS EC2 for real-time predictions and recommendations",
       ],
       tech: ["Python", "Pandas", "NumPy", "Scikit-learn", "XGBoost", "Optuna", "SHAP", "TF-IDF", "Streamlit", "AWS EC2"],
+      metric: "R² 0.895",
       result: "R² = 0.895 with Optuna-tuned XGBoost",
       github: "https://github.com/Hassankhan86/real-estate-price-prediction",
       video: "assets/videos/real-estate-price-prediction.mp4",
@@ -120,6 +121,7 @@
         "Achieved 67.01% validation accuracy (73.09% training accuracy) using fine-tuned ResNet50 and deployed a real-time webcam-based emotion detection system using OpenCV/Streamlit",
       ],
       tech: ["Python", "TensorFlow", "Keras", "CNN", "VGG16", "ResNet50", "OpenCV", "Streamlit"],
+      metric: "67.01% Accuracy",
       result: "67.01% validation accuracy (73.09% training accuracy)",
       github: "https://github.com/Hassankhan86/emotion-detection-cnn",
       video: "assets/videos/emotion-detection-cnn.mp4",
@@ -137,6 +139,7 @@
         "Integrated web research and job search manual tools for real-time career insights, along with ATS evaluation, skill-gap analysis, cover letter generation, and a mock interview system using structured LLM outputs (Pydantic)",
       ],
       tech: ["Python", "LangChain", "LangGraph", "AgentExecutor", "ReAct Agents", "Pydantic", "LLM Orchestration"],
+      metric: "6 Agents Orchestrated",
       result: "6 specialized agents orchestrated behind one supervisor router",
       github: "https://github.com/Hassankhan86/multi-agent-career-assistant",
       video: "assets/videos/multi-agent-career-assistant.mp4",
@@ -155,6 +158,7 @@
         "Tracked experiments via MLflow & DagsHub and deployed a FastAPI app using Docker + GitHub Actions CI/CD on AWS (ECR, EC2) for real-time predictions",
       ],
       tech: ["Python", "Scikit-learn", "MongoDB", "MLflow", "DagsHub", "FastAPI", "Docker", "GitHub Actions", "AWS ECR/EC2"],
+      metric: "CI/CD Automated",
       result: "Automated CI/CD pipeline deployed to production on AWS",
       github: "https://github.com/Hassankhan86/network-security-prediction",
       video: "assets/videos/network-security-prediction.mp4",
@@ -172,11 +176,21 @@
         "Improved performance using SMOTETomek for class imbalance, achieving 94% recall in detecting loan defaults and minimizing high-risk misclassification",
       ],
       tech: ["Python", "Scikit-learn", "XGBoost", "Optuna", "SMOTETomek", "WOE/IV"],
+      metric: "94% Recall",
       result: "94% recall in detecting loan defaults",
       github: "https://github.com/Hassankhan86/bank-loan-default-prediction",
       video: "assets/videos/bank-loan-default-prediction.mp4",
     },
   ];
+
+  // Real issuer logos (assets/logo/) so cert cards show the actual
+  // platform mark. Falls back to a colored initial for any issuer
+  // without a logo file on hand.
+  const ISSUER_STYLE = {
+    Coursera: { logo: "assets/logo/coursera_logo.jpg" },
+    "DeepLearning.AI": { logo: "assets/logo/deeplearningai_logo.jpg" },
+    Udemy: { logo: "assets/logo/udemy_logo.jpg" },
+  };
 
   const CERTIFICATIONS = [
     { title: "Machine Learning with Python", issuer: "Coursera", courseLink: "#", certLink: "#" },
@@ -241,21 +255,17 @@
     const grid = $("#projectsGrid");
     grid.innerHTML = PROJECTS.map((p, i) => `
       <article class="project-card reveal" style="transition-delay:${Math.min(i, 4) * 60}ms">
+        <button type="button" class="project-card-hit" data-project="${p.slug}" aria-label="View details for ${escapeHTML(p.title)}"></button>
         <div class="project-thumb" style="background:linear-gradient(135deg, ${p.gradient[0]}, ${p.gradient[1]})" aria-hidden="true">${p.icon}</div>
         <div class="project-body">
-          <span class="project-tag">${escapeHTML(p.tag)}</span>
+          <div class="project-top-row">
+            <span class="project-tag">${escapeHTML(p.tag)}</span>
+            <span class="project-metric">${escapeHTML(p.metric)}</span>
+          </div>
           <h3 class="project-title">${escapeHTML(p.title)}</h3>
           <p class="project-summary">${escapeHTML(p.summary)}</p>
-          <ul class="project-highlights">
-            ${p.highlights.slice(0, 3).map((h) => `<li>${escapeHTML(h)}</li>`).join("")}
-          </ul>
-          <div class="project-actions">
-            <button type="button" class="btn project-btn-details" data-project="${p.slug}">
-              View Details
-            </button>
-            <a class="btn project-btn-github" href="${p.github}" target="_blank" rel="noopener noreferrer" aria-label="View ${escapeHTML(p.title)} on GitHub (opens in new tab)">
-              GitHub
-            </a>
+          <div class="project-tech-tags">
+            ${p.tech.slice(0, 5).map((t) => `<span class="project-tech-tag">${escapeHTML(t)}</span>`).join("")}
           </div>
         </div>
       </article>
@@ -268,12 +278,15 @@
 
   function renderCertifications() {
     const grid = $("#certGrid");
-    grid.innerHTML = CERTIFICATIONS.map((c) => `
+    grid.innerHTML = CERTIFICATIONS.map((c) => {
+      const style = ISSUER_STYLE[c.issuer];
+      const badge = style
+        ? `<img class="cert-badge" src="${style.logo}" alt="${escapeHTML(c.issuer)} logo" loading="lazy" />`
+        : `<span class="cert-badge cert-badge-fallback" aria-hidden="true">${escapeHTML(c.issuer.charAt(0))}</span>`;
+      return `
       <div class="cert-card reveal">
-        <span class="cert-badge" aria-hidden="true">
-          <svg viewBox="0 0 24 24"><path d="m12 15 8.5-8.5M8 8l-5 5 4 4 5-5M14.5 2.5 21.5 9.5"/><circle cx="7" cy="17" r="4"/></svg>
-        </span>
-        <div>
+        ${badge}
+        <div class="cert-body">
           <h3 class="cert-title">${escapeHTML(c.title)}</h3>
           <p class="cert-issuer">${escapeHTML(c.issuer)}</p>
           <div class="cert-links">
@@ -288,7 +301,8 @@
           </div>
         </div>
       </div>
-    `).join("");
+    `;
+    }).join("");
   }
 
   /* ---------------------------------------------------------
