@@ -668,6 +668,9 @@ p {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  /* Shifts the crop window up so more of the top of the photo (hair)
+     shows, at the cost of cropping a bit more off the bottom instead. */
+  object-position: center 10%;
   opacity: 0;
   transition: opacity 0.4s var(--ease);
 }
@@ -1621,6 +1624,69 @@ p {
   color: var(--text-faint);
   font-size: 0.88rem;
   background: var(--bg-alt);
+}
+
+.modal-gallery {
+  position: relative;
+  background: #000;
+}
+
+.modal-gallery-img {
+  width: 100%;
+  display: block;
+  max-height: 360px;
+  object-fit: contain;
+}
+
+.gallery-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: rgba(0, 0, 0, 0.55);
+  color: var(--text);
+  font-size: 1.4rem;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s var(--ease);
+}
+
+.gallery-nav:hover {
+  background: rgba(0, 0, 0, 0.8);
+}
+
+.gallery-prev {
+  left: 0.75rem;
+}
+
+.gallery-next {
+  right: 0.75rem;
+}
+
+.gallery-dots {
+  position: absolute;
+  bottom: 0.75rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 0.4rem;
+}
+
+.gallery-dot {
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.35);
+}
+
+.gallery-dot.is-active {
+  background: var(--text);
 }
 
 .cert-modal-viewer {

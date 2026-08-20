@@ -33,6 +33,8 @@
     shield: '<path d="M12 3 4 6v6c0 5 3.5 8.5 8 9 4.5-.5 8-4 8-9V6l-8-3Z"/><path d="M12 8v5M12 16h.01"/>',
     bank: '<path d="M3 10 12 4l9 6"/><path d="M4 10v9M9 10v9M15 10v9M20 10v9"/><path d="M2 21h20"/>',
     box: '<path d="M3 8 12 3l9 5v8l-9 5-9-5Z"/><path d="M3 8l9 5 9-5M12 13v8"/>',
+    heart: '<path d="M12 21s-6.7-4.35-9.3-8.6C1 9 2.6 5 6.6 5c2 0 3.5 1 5.4 3 1.9-2 3.4-3 5.4-3 4 0 5.6 4 3.9 7.4C18.7 16.65 12 21 12 21Z"/>',
+    car: '<path d="M5 11 6.5 6.5A2 2 0 0 1 8.4 5h7.2a2 2 0 0 1 1.9 1.5L19 11"/><path d="M3 16v-3a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v3"/><path d="M3 16v2a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-2M18 16v2a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-2"/><circle cx="7.5" cy="16" r="1.5"/><circle cx="16.5" cy="16" r="1.5"/>',
   };
 
   const SKILLS = [
@@ -99,6 +101,52 @@
   ];
 
   const PROJECTS = [
+
+    // Shelf Label Detection & Tracking (YOLO)
+    {
+      slug: "rgis-labels-detection-yolo",
+      title: "Shelf Label Detection & Tracking using YOLO",
+      tag: "CV",
+      icon: "box",
+      gradient: ["#06b6d4", "#0e7490"],
+      // summary: "On-device object detection system that classifies retail shelf-edge price labels by size tier from a custom-trained YOLO model, deployed fully offline in a mobile app.",
+      summary: "Designed and deployed an offline, on-device detection and tracking system using YOLO11n and Flutter to identify and classify retail shelf-edge price labels into size tiers (small/medium/large).",
+      highlights: [
+        "Built a full YOLO training pipeline in Python (Ultralytics), dataset prep, training, evaluation, and quantized export, as numbered, independently runnable CLI scripts rather than a notebook-only workflow",
+        "Labeled data as polygons in Label Studio to capture true rotated tag outlines, then used Ultralytics' automatic polygon-to-box conversion to train a plain detection head ",
+        "Designed a robust two-layer tracking pipeline to prevent double-counting during camera pans. Layer 1 handles motion compensation (BoT-SORT), while Layer 2 uses a Union-Find velocity-extrapolation resolver to merge fragmented track IDs across occlusion gaps",
+        "Trained and benchmarked 2 architectures (YOLO11n vs. YOLO26n) and 2 augmentation strategies on Colab (T4 GPU), tuning scale/rotation augmentation since the classes differ mainly by size and source photos are angled, reaching mAP50 = 0.775, mAP50-95 = 0.457 on the shipped model",
+        "Exported to ONNX with no baked-in NMS so confidence/IoU thresholds stay user-adjustable at inference time rather than fixed at export time.",
+        "Also built an INT32/INT8 post-training quantization export path with an automated safety check: verifies the quantized model's output tensor shape still matches what the inference decoder expects",
+
+      ],
+      tech: ["YOLO", "BoT-SORT", "OpenCV", "ONNX", "Label Studio", "Flutter"],
+      result: "mAP50 = 0.775, mAP50-95 = 0.457 on a 4-class shelf-label detector, deployed for offline on-device inference",
+      github: "https://github.com/Hassankhan86/rgis-labels-detection-yolo",
+      // video: "assets/videos/rgis-labels-detection-yolo.mp4",
+    },
+    
+    // Multi-Agent Career AI Assistant
+    {
+      slug: "multi-agent-career-assistant",
+      title: "Multi-Agent Career AI Assistant",
+      tag: "GenAI",
+      icon: "bot",
+      gradient: ["#8b5cf6", "#5b21b6"],
+      summary: "A Streamlit web app that orchestrates a team of specialized LLM agents (via LangChain + LangGraph) to help users with job searching, resume analysis, cover letter writing, company research, and career planning.",
+      highlights: [
+        "Architected a multi-agent GenAI system using LangChain + LangGraph, with a Supervisor agent that dynamically routes user queries to 7 specialized worker agents (Resume Analyzer, Job Searcher, Cover Letter Generator, Web Researcher, Career Advisor, Market Analyst, ChatBot) based on intent classification.",
+        "Designed a LangGraph-based supervisor routing system and ReAct-style tool using AgentExecutor for intelligent query delegation, reasoning, and tool invocation",
+        "Integrated web research and job search manual tools for real-time career insights, along with ATS evaluation, skill-gap analysis, cover letter generation, and a mock interview system using structured LLM outputs (Pydantic)",
+        "Integrated multiple LLM providers (OpenAI GPT-4, Groq/Llama, Ollama) with a pluggable model configuration layer, letting users switch providers/models at runtime.",
+      ],
+      tech: ["Python", "LangChain", "LangGraph", "Pydantic", "ReAct Agents", "AgentExecutor", "LLM Orchestration"],
+      result: "6 specialized agents orchestrated behind one supervisor router",
+      github: "https://github.com/Hassankhan86/multi-agent-career-assistant",
+      // video: "assets/videos/multi-agent-career-assistant.mp4",
+    },
+
+    // Real Estate Price Prediction
     {
       slug: "real-estate-price-prediction",
       title: "Real Estate Price Prediction & Recommendation System",
@@ -109,18 +157,25 @@
       highlights: [
         "Built an end-to-end ML pipeline for property price prediction, performing data preprocessing, EDA, and feature engineering (area extraction, categorical encoding, outlier handling, VIF, SHAP, RFE) on real-world housing datasets",
         "Trained and compared 10+ regression models (XGBoost, Random Forest, Extra Trees, etc.) across multiple encoding strategies (OrdinalEncoder, OneHotEncoder, TargetEncoder, PCA), achieving an R-squared of 0.895 with Optuna-tuned XGBoost",
-        "Developed a recommendation system using TF-IDF + cosine similarity and built interactive visualizations (geo maps, scatter plots, etc.) in Streamlit",
-        "Deployed application on AWS EC2 for real-time predictions and recommendations",
+        
+        "Removed outliers across 9 numeric columns via IQR, and imputed missing values with domain logic rather than blanket means, e.g. backfilling built_up_area from super_built_up_area/carpet_area, and filling missing agePossession by mode within each property_type + sector group",
+        "Combined 5 separate feature-selection techniques (correlation heatmaps, RandomForest/GradientBoosting permutation importance, LASSO + RFE, SHAP, VIF) to settle on a feature set that's both predictive and non-redundant",
+        "Built interactive visualizations (geo maps, scatter plots, etc.) in Streamlit",
+        "Built a recommendation system on three feature groups (TopFacilities, PriceDetails, LocationAdvantages), each vectorized independently with TF-IDF and matched via cosine similarity",
+        "Deployed the Streamlit app to a self-managed AWS EC2 instance via manual SSH setup",
       ],
-      tech: ["Python", "Pandas", "NumPy", "Scikit-learn", "XGBoost", "Optuna", "SHAP", "TF-IDF", "Streamlit", "AWS EC2"],
+      tech: ["Scikit-learn", "XGBoost", "Optuna", "TF-IDF", "AWS EC2", "Streamlit", "SHAP", "Pandas", "NumPy", ],
       result: "R² = 0.895 with Optuna-tuned XGBoost",
-      github: "https://github.com/Hassankhan86/real-estate-price-prediction",
-      video: "assets/videos/real-estate-price-prediction.mp4",
+      github: "https://github.com/Hassankhan86/ml-real-estate-price-predictor",
+      // video: "assets/videos/real-estate-price-prediction.mp4",
+      images: ["assets/images/p3-real-estate-ml-s1.png", "assets/images/p3-real-estate-ml-s2.png", "assets/images/p3-real-estate-ml-s3.png"],
     },
+    
+    // Emotion Detection using CNN
     {
       slug: "emotion-detection-cnn",
       title: "Emotion Detection using CNN (FER2013 Dataset)",
-      tag: "Vision",
+      tag: "CV",
       icon: "face",
       gradient: ["#ec4899", "#a21caf"],
       summary: "CNN-based facial emotion recognition system with real-time webcam inference, benchmarked against transfer-learning baselines.",
@@ -132,26 +187,31 @@
       ],
       tech: ["Python", "TensorFlow", "Keras", "CNN", "VGG16", "ResNet50", "OpenCV", "Streamlit"],
       result: "67.01% validation accuracy (73.09% training accuracy)",
-      github: "https://github.com/Hassankhan86/emotion-detection-cnn",
-      video: "assets/videos/emotion-detection-cnn.mp4",
+      github: "https://github.com/Hassankhan86/Emotion-Detection-using-CNN-FER2013",
+      // video: "assets/videos/emotion-detection-cnn.mp4",
     },
+
+    // Bank Loan Default Prediction
     {
-      slug: "multi-agent-career-assistant",
-      title: "Multi-Agent Career AI Assistant",
-      tag: "GenAI",
-      icon: "bot",
-      gradient: ["#8b5cf6", "#5b21b6"],
-      summary: "Multi-agent LLM platform orchestrating specialized agents for resume analysis, job search, and interview prep.",
+      slug: "bank-loan-default-prediction",
+      title: "Bank Loan Default Prediction",
+      tag: "Classification",
+      icon: "bank",
+      gradient: ["#22c55e", "#15803d"],
+      summary: "Credit risk model identifying high-risk loan defaults using advanced feature engineering and imbalance handling.",
       highlights: [
-        "Built an end-to-end multi-agent AI career platform with specialized agents for resume analysis, job search, market research, cover letter generation, mock interview system, and career advisory using LLM orchestration",
-        "Designed a LangGraph-based supervisor routing system and ReAct-style tool using AgentExecutor for intelligent query delegation, reasoning, and tool invocation",
-        "Integrated web research and job search manual tools for real-time career insights, along with ATS evaluation, skill-gap analysis, cover letter generation, and a mock interview system using structured LLM outputs (Pydantic)",
+        "Built an end-to-end Bank Loan Default Prediction system using Machine Learning, including data cleaning, EDA, and advanced feature engineering (WOE/IV, VIF)",
+        "Trained and evaluated multiple models (Logistic Regression, Random Forest, XGBoost) with hyperparameter tuning (Optuna, RandomizedSearchCV), selecting the best model using ROC-AUC, KS Statistic, and Gini Coefficient",
+        "Improved performance using SMOTETomek for class imbalance, achieving 94% recall in detecting loan defaults and minimizing high-risk misclassification",
       ],
-      tech: ["Python", "LangChain", "LangGraph", "AgentExecutor", "ReAct Agents", "Pydantic", "LLM Orchestration"],
-      result: "6 specialized agents orchestrated behind one supervisor router",
-      github: "https://github.com/Hassankhan86/multi-agent-career-assistant",
-      video: "assets/videos/multi-agent-career-assistant.mp4",
+      tech: ["Python", "Scikit-learn", "XGBoost", "Optuna", "SMOTETomek", "WOE/IV"],
+      result: "94% recall in detecting loan defaults",
+      github: "https://github.com/Hassankhan86/ml-bank-loan-default-prediction",
+      images: ["assets/images/p5-bank-ml-s1.png", "assets/images/p5-bank-ml-s2.png"],
+      // video: "assets/videos/bank-loan-default-prediction.mp4",
     },
+
+    // Network Security Prediction System
     {
       slug: "network-security-prediction",
       title: "Network Security Prediction System",
@@ -167,80 +227,74 @@
       ],
       tech: ["Python", "Scikit-learn", "MongoDB", "MLflow", "DagsHub", "FastAPI", "Docker", "GitHub Actions", "AWS ECR/EC2"],
       result: "Automated CI/CD pipeline deployed to production on AWS",
-      github: "https://github.com/Hassankhan86/network-security-prediction",
-      video: "assets/videos/network-security-prediction.mp4",
+      github: "https://github.com/Hassankhan86/ml-network-security",
+      // video: "assets/videos/network-security-prediction.mp4",
     },
+    
+    // Health Insurance Premium Prediction
     {
-      slug: "bank-loan-default-prediction",
-      title: "Bank Loan Default Prediction",
-      tag: "Classification",
-      icon: "bank",
-      gradient: ["#22c55e", "#15803d"],
-      summary: "Credit risk model identifying high-risk loan defaults using advanced feature engineering and imbalance handling.",
+      slug: "health-insurance-prediction",
+      title: "Health Insurance Premium Prediction",
+      tag: "Regression",
+      icon: "heart",
+      gradient: ["#ef4444", "#b91c1c"],
+      summary: "End-to-end regression ML project that predicts annual health insurance premiums from demographic, lifestyle, and medical-history inputs, using a segmented modeling strategy deployed as a Streamlit app on AWS EC2.",
       highlights: [
-        "Built an end-to-end Bank Loan Default Prediction system using Machine Learning, including data cleaning, EDA, and advanced feature engineering (WOE/IV, VIF)",
-        "Trained and evaluated multiple models (Logistic Regression, Random Forest, XGBoost) with hyperparameter tuning (Optuna, RandomizedSearchCV), selecting the best model using ROC-AUC, KS Statistic, and Gini Coefficient",
-        "Improved performance using SMOTETomek for class imbalance, achieving 94% recall in detecting loan defaults and minimizing high-risk misclassification",
+        "Built an end-to-end regression pipeline to predict annual health insurance premiums from 12+ features (age, BMI, smoking status, medical history, income, region, etc.), covering data cleaning, EDA, and feature engineering",
+        "Handled outliers and multicollinearity using IQR-based bounds for numeric features and VIF (Variance Inflation Factor) analysis to drop redundant/highly correlated predictors",
+        "Benchmarked 6 regression models Linear, Ridge, LassoCV, ElasticNetCV, and XGBoost (tuned via RandomizedSearchCV and GridSearchCV), selecting XGBoost as the best performer based on error analysis (residuals, % error, actual vs. predicted)",
+        "Improved accuracy via age-segmented modeling: split the dataset into \"young\" (≤25) and \"rest\" cohorts, training separate models/scalers for each after discovering this outperformed a single unified model",
+        "Built a Streamlit web app for instant premium predictions and deployed it on AWS EC2",
       ],
-      tech: ["Python", "Scikit-learn", "XGBoost", "Optuna", "SMOTETomek", "WOE/IV"],
-      result: "94% recall in detecting loan defaults",
-      github: "https://github.com/Hassankhan86/bank-loan-default-prediction",
-      video: "assets/videos/bank-loan-default-prediction.mp4",
+      tech: ["Python", "Pandas", "NumPy", "Scikit-learn", "XGBoost", "Matplotlib", "Seaborn", "Streamlit", "AWS EC2"],
+      result: "Best model: XGBoost (GridSearchCV) with age-segmented modeling, deployed live on AWS EC2",
+      github: "https://github.com/Hassankhan86/ml-health-insurance-premium-prediction",
+      images: ["assets/images/p7-health-ml-s1.png", "assets/images/p7-health-ml-s2.png"],
+      // video: "assets/videos/placeholder-project-two.mp4",
     },
+
+    {
+      slug: "cars-license-plate-detection",
+      title: "Automatic License Plate Detection & Recognition",
+      tag: "CV",
+      icon: "car",
+      gradient: ["#6366f1", "#4338ca"],
+      summary: "A computer vision project that trains a YOLOv8 object detection model to locate license plates in car images/video, then applies OCR (Tesseract) to extract the plate text.",
+      highlights: [
+        "Built an end-to-end license plate detection pipeline: converted a Kaggle car-plate dataset from XML (Pascal VOC) annotations into YOLO-format labels, then structured it into train/val/test splits with a custom datasets.yaml config",
+        "Trained a YOLOv8 (yolov8n) object detector from a pretrained checkpoint for 100 epochs at 320×320 resolution on GPU, producing a custom best.pt weights file for single-class (\"license_plate\") detection",
+        "Integrated OCR text extraction using Tesseract (pytesseract) to read the alphanumeric plate number from each detected bounding-box crop, combining detection and recognition in one pipeline",
+        "Deployed an interactive Streamlit app supporting both image and video uploads (jpg/png/mp4/avi/mov/mkv), running frame-by-frame YOLO inference on video and overlaying bounding boxes with confidence scores in real time",
+      ],
+      tech: ["Python", "YOLOv8", "Ultralytics", "OpenCV", "PyTesseract/OCR", "Streamlit", "PyTorch"],
+      result: "Custom-trained YOLOv8 detector deployed in a real-time Streamlit app for image and video plate detection",
+      github: "#",
+      // video: "assets/videos/placeholder-project-three.mp4",
+    },
+
+    
     // --- Dummy placeholders below, added only to demo the "Show More"
     // toggle and the Automation filter tab — replace with real projects
     // or delete before publishing.
-    {
-      slug: "placeholder-project-one",
-      title: "Placeholder Project One — Replace Me",
-      tag: "Automation",
-      icon: "box",
-      gradient: ["#71717a", "#3f3f46"],
-      summary: "Dummy card for testing the Show More layout — swap in a real project summary here.",
-      highlights: [
-        "Replace with a real highlight describing what was built",
-        "Replace with a real highlight describing the approach or tooling",
-        "Replace with a real highlight describing the outcome",
-      ],
-      tech: ["Placeholder", "Placeholder", "Placeholder"],
-      result: "Placeholder result — replace with a real outcome.",
-      github: "#",
-      video: "assets/videos/placeholder-project-one.mp4",
-    },
-    {
-      slug: "placeholder-project-two",
-      title: "Placeholder Project Two — Replace Me",
-      tag: "Placeholder",
-      icon: "box",
-      gradient: ["#6b7280", "#374151"],
-      summary: "Dummy card for testing the Show More layout — swap in a real project summary here.",
-      highlights: [
-        "Replace with a real highlight describing what was built",
-        "Replace with a real highlight describing the approach or tooling",
-        "Replace with a real highlight describing the outcome",
-      ],
-      tech: ["Placeholder", "Placeholder", "Placeholder"],
-      result: "Placeholder result — replace with a real outcome.",
-      github: "#",
-      video: "assets/videos/placeholder-project-two.mp4",
-    },
-    {
-      slug: "placeholder-project-three",
-      title: "Placeholder Project Three — Replace Me",
-      tag: "Placeholder",
-      icon: "box",
-      gradient: ["#525252", "#262626"],
-      summary: "Dummy card for testing the Show More layout — swap in a real project summary here.",
-      highlights: [
-        "Replace with a real highlight describing what was built",
-        "Replace with a real highlight describing the approach or tooling",
-        "Replace with a real highlight describing the outcome",
-      ],
-      tech: ["Placeholder", "Placeholder", "Placeholder"],
-      result: "Placeholder result — replace with a real outcome.",
-      github: "#",
-      video: "assets/videos/placeholder-project-three.mp4",
-    },
+    
+    // {
+    //   slug: "placeholder-project-three",
+    //   title: "Placeholder Project Three — Replace Me",
+    //   tag: "Placeholder",
+    //   icon: "box",
+    //   gradient: ["#525252", "#262626"],
+    //   summary: "Dummy card for testing the Show More layout — swap in a real project summary here.",
+    //   highlights: [
+    //     "Replace with a real highlight describing what was built",
+    //     "Replace with a real highlight describing the approach or tooling",
+    //     "Replace with a real highlight describing the outcome",
+    //   ],
+    //   tech: ["Placeholder", "Placeholder", "Placeholder"],
+    //   result: "Placeholder result — replace with a real outcome.",
+    //   github: "#",
+    //   video: "assets/videos/placeholder-project-three.mp4",
+    // },
+    
   ];
 
   // Real issuer logos (assets/logo/) so cert cards show the actual
@@ -252,7 +306,7 @@
     "DeepLearning.AI": { logo: "assets/logo/deeplearningai_logo.jpg", color: "#fe4960" },
     Udemy: { logo: "assets/logo/udemy_logo.jpg", color: "#a855f7" },
     "YT-CampusX": { logo: "assets/logo/youtube-logo.svg", color: "#ff0000" },
-    "YouTube-CampusX": { logo: "assets/logo/youtube-logo.svg", color: "#ff0000" },
+    "YouTube-CampusX": { logo: "assets/logo/youtube-logo.svg", color: "#e96d6d" },
   };
 
   // certFile is a placeholder path — drop the real certificate image/PDF
@@ -342,7 +396,7 @@
   // Fixed tab set (not derived from PROJECTS) so the categories a
   // recruiter sees stay stable regardless of what tags individual
   // projects carry. Each project's `tag` should be one of these.
-  const PROJECT_FILTERS = ["All", "GenAI", "Classification", "Regression", "Vision", "Automation"];
+  const PROJECT_FILTERS = ["All", "GenAI", "Classification", "Regression", "CV", "Automation"];
 
   let projectsExpanded = false;
   let activeProjectFilter = "All";
@@ -571,6 +625,14 @@
   let lastFocusedEl = null;
 
   function buildModalContent(project) {
+    const hasVideo = !!project.video;
+    const hasImages = Array.isArray(project.images) && project.images.length > 0;
+    const demoBtn = hasVideo
+      ? `<button type="button" class="btn btn-secondary" id="watchDemoBtn" data-video="${project.video}" data-title="${escapeHTML(project.title)}">Watch Demo</button>`
+      : hasImages
+      ? `<button type="button" class="btn btn-secondary" id="viewScreenshotsBtn">View Screenshots</button>`
+      : "";
+
     return `
       <span class="modal-tag">${escapeHTML(project.tag)}</span>
       <h2 class="modal-title" id="modalTitle">${escapeHTML(project.title)}</h2>
@@ -595,9 +657,7 @@
         <a class="btn btn-primary" href="${project.github}" target="_blank" rel="noopener noreferrer">
           View on GitHub
         </a>
-        <button type="button" class="btn btn-secondary" id="watchDemoBtn" data-video="${project.video}" data-title="${escapeHTML(project.title)}">
-          Watch Demo
-        </button>
+        ${demoBtn}
       </div>
 
       <div class="modal-video-wrap" id="modalVideoWrap" hidden></div>
@@ -620,9 +680,28 @@
 
     $("#modalClose").focus();
 
-    $("#watchDemoBtn").addEventListener("click", (e) => {
-      const btn = e.currentTarget;
-      showDemoVideo(btn.dataset.video, btn.dataset.title);
+    const demoBtn = $("#watchDemoBtn");
+    if (demoBtn) {
+      demoBtn.addEventListener("click", (e) => {
+        const btn = e.currentTarget;
+        showDemoVideo(btn.dataset.video, btn.dataset.title);
+      });
+    }
+
+    const galleryBtn = $("#viewScreenshotsBtn");
+    if (galleryBtn) {
+      galleryBtn.addEventListener("click", () => showImageGallery(project.images, project.title));
+    }
+  }
+
+  // The video/gallery panel is the last thing in the modal, and its final
+  // height isn't known until the media itself loads — so scrolling once on
+  // click undershoots. Re-run this on load/error too to land fully in view.
+  function scrollModalToBottom() {
+    const modal = $("#projectModal .modal");
+    if (!modal) return;
+    requestAnimationFrame(() => {
+      modal.scrollTo({ top: modal.scrollHeight, behavior: "smooth" });
     });
   }
 
@@ -632,6 +711,7 @@
 
     const fallback = () => {
       wrap.innerHTML = `<p class="video-fallback">Demo video coming soon. Add the file at <code>${src}</code> to enable playback.</p>`;
+      scrollModalToBottom();
     };
 
     const video = document.createElement("video");
@@ -643,6 +723,7 @@
     video.src = src;
 
     video.addEventListener("error", fallback);
+    video.addEventListener("loadedmetadata", scrollModalToBottom);
     wrap.innerHTML = "";
     wrap.appendChild(video);
 
@@ -650,7 +731,59 @@
       /* Autoplay may be blocked, or the source failed — "error" handles the latter. */
     });
 
-    wrap.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    scrollModalToBottom();
+  }
+
+  let galleryIndex = 0;
+
+  function showImageGallery(images, title) {
+    galleryIndex = 0;
+    renderGalleryFrame(images, title);
+
+    const wrap = $("#modalVideoWrap");
+    wrap.hidden = false;
+    scrollModalToBottom();
+  }
+
+  function renderGalleryFrame(images, title) {
+    const wrap = $("#modalVideoWrap");
+    const multi = images.length > 1;
+    const src = images[galleryIndex];
+
+    wrap.innerHTML = `
+      <div class="modal-gallery">
+        <img class="modal-gallery-img" src="${src}" alt="${escapeHTML(title)} screenshot ${galleryIndex + 1} of ${images.length}">
+        ${
+          multi
+            ? `
+          <button type="button" class="gallery-nav gallery-prev" aria-label="Previous screenshot">&lsaquo;</button>
+          <button type="button" class="gallery-nav gallery-next" aria-label="Next screenshot">&rsaquo;</button>
+          <div class="gallery-dots">
+            ${images.map((_, i) => `<span class="gallery-dot${i === galleryIndex ? " is-active" : ""}"></span>`).join("")}
+          </div>
+        `
+            : ""
+        }
+      </div>
+    `;
+
+    const img = $(".modal-gallery-img", wrap);
+    img.addEventListener("load", scrollModalToBottom);
+    img.addEventListener("error", () => {
+      wrap.innerHTML = `<p class="video-fallback">Screenshot coming soon. Add the file at <code>${src}</code> to enable this preview.</p>`;
+      scrollModalToBottom();
+    });
+
+    if (multi) {
+      $(".gallery-prev", wrap).addEventListener("click", () => {
+        galleryIndex = (galleryIndex - 1 + images.length) % images.length;
+        renderGalleryFrame(images, title);
+      });
+      $(".gallery-next", wrap).addEventListener("click", () => {
+        galleryIndex = (galleryIndex + 1) % images.length;
+        renderGalleryFrame(images, title);
+      });
+    }
   }
 
   function closeProjectModal() {
