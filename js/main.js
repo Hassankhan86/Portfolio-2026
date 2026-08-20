@@ -122,7 +122,7 @@
       ],
       tech: ["YOLO", "BoT-SORT", "OpenCV", "ONNX", "Label Studio", "Flutter"],
       result: "mAP50 = 0.775, mAP50-95 = 0.457 on a 4-class shelf-label detector, deployed for offline on-device inference",
-      github: "https://github.com/Hassankhan86/rgis-labels-detection-yolo",
+      github: "https://github.com/Hassankhan86/rgis-labels-detection-yolo/tree/4-fixing-batch-bugs",
       // video: "assets/videos/rgis-labels-detection-yolo.mp4",
     },
     
